@@ -119,7 +119,8 @@ def menu():
     print("1) Upcoming Evolvve Events")
     print("2) Recent News and Trends")
     print("3) Give Feedback for Evolvve")
-    print("4) Visit Homepage\n\n")
+    print("4) Change Password for login")
+    print("5) Visit Homepage\n\n")
     inp = int(raw_input("Enter your choice: "))
     if inp == 1:
         print("Upcoming Evolvve Events!!!") #Till Now neither table nor files written!!!
@@ -176,6 +177,24 @@ def menu():
         file.close()
         print("Feedback successfully sent!!!")
     elif inp == 4:
+        sapid = raw_input("Enter SAP-ID: ")
+        pass_current = raw_input("Enter Correct Password: ")
+        cur.execute("select password from membersignup where sapid = :s",{"s":sapid})
+        p = cur.fetchall()
+        p1 = list(p[0])
+        p2 = str(p[0])
+        if p2 == pass_current:
+            pass_new = raw_input("Enter new password: ")
+            pass_new1 = raw_input("Re-enter new password: ")
+            if pass_new == pass_new1:
+                cur.execute("update membersignup set password = :p where sapid = :s",{"p":pass_new,"s":sapid})
+            else:
+                print("Passwords do not match!!! Retry...\nRedirecting to main menu")
+                menu()
+        else:
+            print("Wrong Password Entered!! Redirecting to main menu!!!")
+            menu()
+    elif inp == 5:
         homepage()
     else:
         print("Wrong Choice! Please Try again!")
