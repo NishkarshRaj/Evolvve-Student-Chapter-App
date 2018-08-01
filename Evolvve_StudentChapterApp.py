@@ -133,7 +133,8 @@ def menu():
         print("Enter Any event name you want to know more about!!!")
         print("Press 1) To redirect to menu")
         inp1 = raw_input("Enter your choice: ")
-        if int(inp1) == 1:
+        file3.close()
+        if inp1 == '1':
             menu()
         else:
             try:
@@ -144,20 +145,27 @@ def menu():
             else:
                 print(file.read())
             finally:
-                print("Could not find the file... Redirecting to Menu Page!!!")
+                menu()
+            filename = "Event_" + inp1 + ".txt"
+            file5 = open("filename","r",1)
+            if file5.read() == None:
+                print("File does not exists")
+            else:
+                print(file5.read())
                 menu()
     elif inp == 2:
         print("Recent News and Trends!!!") #No tables required!! Files already written!!!
         file_recent = open("recent_trend.txt","r",1)
         print(file_recent.read())
+        file_recent.close()
         file_trend = open("flag_trend.txt","r",1)
-        flag_trend = file_trend.read()
+        flag_trend = int(file_trend.read())
         file_trend.close()
-        inp2 = int(input("Enter your choice in integer: "))
+        inp2 = int(raw_input("Enter your choice in integer: "))
         if inp2 >= 1 and inp2 <= flag_trend:
             try:
-                filename = str(inp2) + ".txt"
-                file = open(filename,"r",1)
+                file7 = str(inp2) + ".txt"
+                file = open(file7,"r",1)
             except:
                 print("Sorry! Unable to open file!!!")
             else:
@@ -182,12 +190,14 @@ def menu():
         cur.execute("select password from membersignup where sapid = :s",{"s":sapid})
         p = cur.fetchall()
         p1 = list(p[0])
-        p2 = str(p[0])
+        p2 = str(p1[0])
         if p2 == pass_current:
             pass_new = raw_input("Enter new password: ")
             pass_new1 = raw_input("Re-enter new password: ")
             if pass_new == pass_new1:
                 cur.execute("update membersignup set password = :p where sapid = :s",{"p":pass_new,"s":sapid})
+                con.commit()
+                print("\n Password Updated Successfully!!!!!")
             else:
                 print("Passwords do not match!!! Retry...\nRedirecting to main menu")
                 menu()
@@ -375,7 +385,7 @@ def admin_menu():
         print("Following Events are available!!!")
         cur.execute("select * from events")
         for row in cur:
-            print(cur)
+            print(row)
         e_name = raw_input("Enter name of event: ")
         g_name = raw_input("Enter group name :")
         fees = float(raw_input("Enter fees for the group!!!"))
@@ -383,11 +393,13 @@ def admin_menu():
         print("Now Enter details of the members of the group",g_name)
         inp3 = int(raw_input("Enter Number of participants [1,2,3,4]"))
         if inp3 >=1 and inp3 <=4:
-            for i in range(inp3):
+            for i in range(0,inp3):
                 m_name = raw_input("Enter name of the member: ")
                 m_sap = raw_input("Enter sapid of the member: ")
-                cur.execute("insert into participation members values (:e,:n,:s)",{"e":g_name,"n":m_name,"s":m_sap})
+                cur.execute("insert into participation_members values (:e,:n,:s)",{"e":g_name,"n":m_name,"s":m_sap})
                 con.commit()
+                print("\n Registration Done!!!!!")
+                admin_menu()
         else:
             print("Invalid number of participants entered!")
             print("Restart from beginning! Redirecting to Admin menu")
