@@ -13,6 +13,14 @@ def clear():
     if name=='posix':
         _=system('clear') 
 ''' Class that uses multiple important functions that are not related in true sense of student chapter '''
+
+''' User Defined Exception Raiser '''
+class exception_raiser(Exception):
+        def __init__(self,msg):
+            self.msg = msg
+        def print_exception(self):
+            print(self.msg)
+
 class extra:
     ''' Function to generate Student Chapter ID '''
     def studentID(self,stu_id):
@@ -65,7 +73,9 @@ class extra:
                     print("Generating Student Chapted ID")
     ''' Function for fee calculation '''
     def fee(self,name):
-        print("Hello",name)
+        sleep(3)
+        clear()
+        print("Hello",name,"To the Fee insertion page")
         x = name
         print("Following Packages are available!!!")
         print("1) Premium Membership for 500 Rupees - 1 Year")
@@ -73,10 +83,13 @@ class extra:
         print("3) Platinum Membership for 2000 Rupees - 4 Years + Tech Magazines")
         inp = int(raw_input("Enter your Choice [1/2/3] :"))
         if inp == 1:
+            print("Returning the Value entered")
             return 500
         elif inp == 2:
+            print("Returning the Value entered")
             return 1000
         elif inp == 3:
+            print("Returning the Value entered")
             return 2000
         else:
             print("Wrong Choice!! Try Again")
@@ -107,15 +120,22 @@ class extra:
             return 0 #If 2 == False incorrect pass
     ''' About Evolvve Function using File Handling '''
     def about(self):
+        sleep(3)
+        clear()
         file = open("About.txt","r",1)
         print(file.read())
-        input()
-        homepage()
+        ans = raw_input("Print y/Y to redirect to homepage else Application will close")
+        if ans == 'y' or ans == 'Y':
+            homepage()
+        else:
+            quit()
 
 class login_pages:
     ''' Forgot password code '''
     ''' When Username exists in Membersignup page but user does not remember his/her password '''
     def forgotpass(self,sap_id):
+        sleep(3)
+        clear()
         print("Enter your Registration Number for verification!!!")
         reg_num = raw_input("Enter your registration number: ")
         cur.execute("select registration_num from membersignup where sapid = :sap",{"sap":sap_id,})
@@ -123,21 +143,25 @@ class login_pages:
         data_rn = list(d_rn[0])
         database_rn = str(data_rn[0])
         if database_rn == None:
-            print("Registration Number does not exist in our Database!!! Access Denied!!!")
+            print("\nRegistration Number does not exist in our Database!!! Access Denied!!!")
             quit()
         elif database_rn == reg_num:
-            print("Database Result Match Success!!!")
+            print("\n\nDatabase Result Match Success!!!")
             cur.execute("select password from membersignup where sapid = :sap",{"sap":sap_id})
             passwo = cur.fetchall()
             passw = list(passwo[0])
             password = str(passw[0])
-            print("Your Password is:",password)
-            print("Redirecting to login page")
-            clear()
-            self.login()
+            print("Your Password is =>",password)
+            ans1 = raw_input("\nEnter y/Y to redirect to login page! Else application redirects to homepage!!! \n")
+            if ans1 == 'y' or ans1 == 'Y':
+                print("\nRedirecting to login page.....")
+                self.login()
+            else:
+                print("\nRedirecting to homepage....")
+                homepage()
         else:
-            print("Wrong Registration Number Entered!!! Retry")
-            inp1=raw_input("Enter y/Y to retry")
+            print("\nWrong Registration Number Entered!!! Retry")
+            inp1=raw_input("\nEnter y/Y to retry : ")
             if inp1=='y' or inp1=='Y':
                 self.forgotpass(sap_id)
             else:
@@ -146,14 +170,21 @@ class login_pages:
     ''' Login Page '''
     def login(self):
         try:
+            sleep(3)
+            clear()
             print("\n\n")
             print("\t\t\t\t\t\t\tEvolvve: Student Chapter Application\n\n\n")
             print("\t\t\t\t\t\t\t\tLogin Page!!!\n\n")
             sapid = raw_input("Enter SAP ID: ")
-            pass_db = cur.execute("select password from membersignup where sapid = :sap",{"sap":sapid,})
-            pass_db = cur.fetchall()
-            pass_data = list(pass_db[0])
-            pass_database = str(pass_data[0])
+            cur.execute("select password from membersignup where sapid = :sap",{"sap":sapid,})
+            var1 = cur.fetchall()
+            if not var1:
+                raise exception_raiser("Sap ID is not registered!!  Please Sign Up")
+                
+            else:
+                pass_db=var1
+                pass_data = list(pass_db[0])
+                pass_database = str(pass_data[0])
             if pass_database == None:
                 print("User does not exist in Database!!!") #Case 1) User does not exists
                 homepage()
@@ -165,6 +196,7 @@ class login_pages:
                 elif pass_database==None:
                     print("Cannot Access password from the database!!!")
                 else:
+                    print("\n\n")
                     print("Incorrect Password! ")
                     print("1) Retry Login")
                     print("2) Forgot Password?")
@@ -174,15 +206,21 @@ class login_pages:
                     elif inp == 2:
                         self.forgotpass(sapid) #Case 4: Users exists but needs to ask password
                     else:
-                        print("Access Denied! Too much faults!! Redirecting to homepage!")
+                        print("\nAccess Denied! Too much faults!! Redirecting to homepage!")
                         homepage()
         except sqlite3.DatabaseError as e:
             print("Database Error:",e)
-        except:
+            self.login()
+        except exception_raiser as e1:
+            e1.print_exception()
             print("Runtime error encountered!!!")
+            self.login()
+    
     ''' Login Page '''
     def adminlogin(self):
         try:
+            sleep(3)
+            clear()
             print("\n\n")
             print("\t\t\t\t\t\t\tEvolvve: Student Chapter Application\n\n\n")
             print("\t\t\t\t\t\t\t\tAdmin Login Page\n\n")
@@ -229,6 +267,8 @@ class login_pages:
 class menu_pages:
     ''' Menu Page for Normal Login '''
     def menu(self):
+        sleep(3)
+        clear()
         print("\t\t\t\t\t\t\tMain Menu Page\n\n")
         print("1) Upcoming Evolvve Events")
         print("2) Recent News and Trends")
@@ -237,14 +277,14 @@ class menu_pages:
         print("5) Visit Homepage\n\n")
         inp = int(raw_input("Enter your choice: "))
         if inp == 1:
-            print("Upcoming Evolvve Events!!!") #Till Now neither table nor files written!!!
+            print("\n\n\n")
+            print("Upcoming Evolvve Events!!!\n") #Till Now neither table nor files written!!!
             #cur.execute("select * from events")
             #for row in cur:
                 #print(row)
             file3 = open("Event_list.txt","r",1)
             print(file3.read())
-            print("\n\n")
-            print("Enter Any event name you want to know more about!!!")
+            print("\nEnter Any event name you want to know more about!!!")
             print("Press 1) To redirect to menu")
             inp1 = raw_input("Enter your choice: ")
             file3.close()
@@ -252,6 +292,7 @@ class menu_pages:
                 self.menu()
             else:
                 try:
+                    print("\n\n")
                     filename = "Event_" + inp1 + ".txt" #Event files should be stored as Event_filename.txt
                     file = open(filename,"r",1)
                 except:
@@ -259,6 +300,7 @@ class menu_pages:
                 else:
                     print(file.read())
                 finally:
+                    sleep(4)
                     self.menu()
                 filename = "Event_" + inp1 + ".txt"
                 file5 = open("filename","r",1)
@@ -268,6 +310,7 @@ class menu_pages:
                     print(file5.read())
                     self.menu()
         elif inp == 2:
+            print("\n\n\n")
             print("Recent News and Trends!!!") #No tables required!! Files already written!!!
             file_recent = open("recent_trend.txt","r",1)
             print(file_recent.read())
@@ -285,9 +328,12 @@ class menu_pages:
                 else:
                     print(file.read())
                 finally:
-                    self.menu()
+                    k=raw_input("\n\n Press enter to redirect to menu : ")
+                    k=32
+                    if k==32:
+                        self.menu()
             else:
-                print("Wrong Choice!!! Redirecting to Main Menu!!!")
+                print(" Wrong Choice!!! Redirecting to Main Menu!!!")
                 self.menu()
         elif inp == 3:
             print("Writing Feedback!!!")
@@ -299,33 +345,63 @@ class menu_pages:
             file.close()
             print("Feedback successfully sent!!!")
         elif inp == 4:
-            sapid = raw_input("Enter SAP-ID: ")
-            pass_current = raw_input("Enter Correct Password: ")
-            cur.execute("select password from membersignup where sapid = :s",{"s":sapid})
-            p = cur.fetchall()
-            p1 = list(p[0])
-            p2 = str(p1[0])
-            if p2 == pass_current:
-                pass_new = raw_input("Enter new password: ")
-                pass_new1 = raw_input("Re-enter new password: ")
-                if pass_new == pass_new1:
-                    cur.execute("update membersignup set password = :p where sapid = :s",{"p":pass_new,"s":sapid})
-                    con.commit()
-                    print("\n Password Updated Successfully!!!!!")
+            try:
+                sapid = raw_input("Enter SAP-ID: ")
+                if len(sapid)!=9:
+                    raise exception_raiser("SAP ID is always of length 9 characters. Please Retry..")
+                for k in sapid:
+                    if ord(k) >= 48 and ord(k) <=57:
+                        pass
+                    else:
+                        raise exception_raiser("Invalid Character in SAP ID")
+                pass_current = raw_input("Enter Correct Password: ")
+                cur.execute("select password from membersignup where sapid = :s",{"s":sapid})
+                p = cur.fetchall()
+                p1 = list(p[0])
+                p2 = str(p1[0])
+                if p2 == None:
+                    raise exception_raiser("Either member is not enrolled or password does not exist")
+                if p2 == pass_current:
+                    pass_new = raw_input("Enter new password: ")
+                    flag_41 = 0
+                    e41 = extra()
+                    flag_41 = e41.checkpass(pass_new)
+                    if flag_41 == 0:
+                        raise exception_raiser("Incorrect Format of new password! Atleast 1 Capital 1 small alphabet 1 digit and 1 special character needed")
+                    pass_new1 = raw_input("Re-enter new password: ")
+                    if pass_new == pass_new1:
+                        cur.execute("update membersignup set password = :p where sapid = :s",{"p":pass_new,"s":sapid})
+                        con.commit()
+                        print("\n Password Updated Successfully!!!!!")
+                    else:
+                        print("Passwords do not match!!! Retry...\nRedirecting to main menu")
+                        self.menu()
                 else:
-                    print("Passwords do not match!!! Retry...\nRedirecting to main menu")
+                    print("Wrong Password Entered!! Redirecting to main menu!!!")
                     self.menu()
+            except sqlite3.DatabaseError as e:
+                print("Database Error encountered",e)
+                self.menu()
+            except exception_raiser as e:
+                e.print_exception()
+                self.menu()
+            except:
+                print("Runtime Error encountered!!!")
+                self.menu()
             else:
-                print("Wrong Password Entered!! Redirecting to main menu!!!")
+                print("Password Changed Successfully")
+            finally:
                 self.menu()
         elif inp == 5:
-            homepage()
+                homepage()
         else:
             print("Wrong Choice! Please Try again!")
             self.menu()
         
     ''' Menu Page for Admin Login '''
     def admin_menu(self):
+        sleep(3)
+        clear()
         print("1) Create new Event")
         print("2) Create new file for recent news and trends!")
         print("3) Read Feedbacks from Users")
@@ -376,7 +452,9 @@ class menu_pages:
         elif inp == 3:
             import os
             print("Available Support Files are:\n")
-            for file in os.listdir("/home/lakshika/Desktop/Python_Programs"):#Path has to be inserted here Dont end with \ else unicode problem
+            path1 = raw_input("Enter path of current folder in Your pc to extract all Support files")
+            for file in os.listdir(path1):#Path has to be inserted here Dont end with \ else unicode problem
+                "Path for Lakshika PC is:/home/lakshika/Desktop/Python_Programs"
                 if file.endswith(".txt") and file.startswith("Support_"):
                     print(os.path.join(file))
             filename = raw_input("\nEnter the file name of the above list which you want to read\n")
@@ -456,22 +534,25 @@ class menu_pages:
             print("Wrong Choice! Please Try Again...")
             self.admin_menu()
 
-''' User Defined Exception Raiser '''        
-class exception_raiser(Exception):
-    def __init__(self,msg):
-        self.msg = msg
-    def print_exception(self):
-        print(self.msg)
 
 ''' Code For Signup Page '''	
 class sign_up:
     def signup(self):
         try:
-            #sleep(8)
-            #clear()
+            sleep(8)
+            clear()
             print("\t\t\t\t\t\t\t\t\t\tSignUp For Evolvve!\n\n\n")
             name = raw_input("Student Name : ")
             sap_id = raw_input("SAP Id : ")
+            if len(sap_id)!=9:
+                raise exception_raiser("Sap Id is always of length 9 characters. Please Retry....")
+            else:
+                for k in sap_id:
+                    if ord(k)>=48 and ord(k)<=57:
+                        pass
+                    else:
+                        raise exception_raiser("Invalid Character in Sap Id")
+
             password = raw_input("Password : ")
             '''check password function is called '''
             e1 = extra() #Object of class extra!!!
@@ -518,6 +599,7 @@ class sign_up:
             self.signup()
         else:
             con.commit()
+            sleep(7)
             clear()
             print("SignUp is successfully completed!!!")
         finally:
@@ -582,7 +664,7 @@ def homepage():
         e = extra() #e is the object of extra class which contains functions that are used multiple times in the project but are not related to body of chapter
         e.about()
     if inp == 5:
-        exit()
+        quit()
 
 ''' Main code... Execution starts from here!!!'''
 homepage()
