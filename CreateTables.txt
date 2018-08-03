@@ -9,7 +9,7 @@ branch varchar(15) not null,
 yearofstudy int check (yearofstudy in (1,2,3,4)) not null,
 gender varchar(1) check (gender in ('m','M','F','f','o','O')) not null,
 memberfee int check (memberfee in (500,1000,2000)),
-primary key (sapid,password)
+primary key (sapid)
 );
 create table committee
 (
