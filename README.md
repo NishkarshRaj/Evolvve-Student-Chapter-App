@@ -1,6 +1,14 @@
 # Evolvve-Student-Chapter-Application
 
-# How to contribute:
+Created by:
+
+[Nishkarsh Raj](https://github.com/NishkarshRaj)
+
+[Lakshika Parihar](https://github.com/lakshika1064)
+
+[Shubham Bansal](https://github.com/SHUBHAMBANSAL001)
+
+## How to contribute:
 
 1. Fork this repository on your own GitHub Account
 
