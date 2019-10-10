@@ -44,3 +44,13 @@ $ git push -u origin {branch name}
 ```
 
 8. Go to GitHub and open a pull request to the upstream repository
+
+## How to update forked repository with our main repository
+
+```
+$ git remote add upstream "https://www.github.com/NishkarshRaj/Evolvve-Student-Chapter-App"
+$ git checkout master
+$ git fetch upstream
+$ git merge upstream/master
+$ git push -f origin master
+```
