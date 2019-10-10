@@ -1,5 +1,38 @@
-# Evolvve-Student-Chapter-App
-Evolution is the process which makes someone/something ordinary to extra ordinary. Here is a project done by UPES Students from B.Tech DevOps which is generic model on Student Chapters that helps us in extra-curricular activities.
+# Evolvve-Student-Chapter-Application
 
-Open Source Project under Storms in Brewing Community.
-Evolvve Official Application for generic Student Chapter Management in Colleges.
+# How to contribute:
+
+1. Fork this repository on your own GitHub Account
+
+2. Clone this repository to your local machine
+
+```
+$ git clone "https://www.github.com/{Your Git Username}/Evolvve-Student-Chapter-Application"
+```
+
+3. Go to the root folder of this repository
+```
+cd Evolvve-Student-Chapter-Application
+```
+
+4. Make your changes on new branch
+```
+$ git checkout -b {branch name}
+```
+
+5. Stage your changes
+```
+$ git add {filename}
+```
+
+6. Commit your changes
+```
+$ git commit -m "Commit message"
+```
+
+7. Push your branch
+```
+$ git push -u origin {branch name}
+```
+
+8. Go to GitHub and open a pull request to the upstream repository
